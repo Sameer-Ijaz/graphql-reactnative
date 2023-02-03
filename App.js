@@ -1,48 +1,34 @@
-import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, { useState } from 'react';
+import { View, Text, Button } from 'react-native';
 
-import Home from './Home';
-import ProfileScreen from './ProfileScreen.js';
-import Dashboard from './Dashboard';
-import LearnFlatList from './LearnFlatList';
-import Settings from './Settings';
-import Chatting from './Chatting';
-import SettingsScreen from './SettingsScreen';
-import HomeForClass from './HomeForClass';
-import HomeForFunctional from './HomeForFunctional';
-import SettingForClass from './SettingForClass';
+const App = () => {
+  const [result, setResult] = useState(0);
+  const [input, setInput] = useState('');
 
-const Stack = createNativeStackNavigator();
+  const handlePress = (type, value) => {
+    if (type === 'number') {
+      setInput(input + value);
+    } else if (type === 'operator') {
+      setInput(input + ' ' + value + ' ');
+    } else if (type === 'clear') {
+      setInput('');
+    } else if (type === 'calculate') {
+      setResult(eval(input));
+    }
+  };
 
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-
-// Initialize Apollo Client
-const client = new ApolloClient({
-  uri: 'https://countries.trevorblades.com/graphql',
-  cache: new InMemoryCache()
-});
-
-export default function App(props) {
   return (
-    <ApolloProvider client={client}>
-    <NavigationContainer>
-      <Stack.Navigator>
-        
-        <Stack.Screen name="Home" component={Home} options={{ title: 'Welcome' }} />
-        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-        <Stack.Screen name="Dashboard" component={Dashboard} />
-        <Stack.Screen name="LearnFlatList" component={LearnFlatList} />
-        <Stack.Screen name="Settings" component={Settings} />
-        <Stack.Screen name="Chatting" component={Chatting} />
-        <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
-        <Stack.Screen name="HomeForClass" component={HomeForClass} />
-        <Stack.Screen name="HomeForFunctional" component={HomeForFunctional} />
-        <Stack.Screen name="SettingForClass" component={SettingForClass} />
-
-      </Stack.Navigator>
-    </NavigationContainer>
-    </ApolloProvider>
-
+    <View>
+      <Text>{input}</Text>
+      <Text>{result}</Text>
+      <Button title="1" onPress={() => handlePress('number', 1)} />
+      <Button title="2" onPress={() => handlePress('number', 2)} />
+      <Button title="3" onPress={() => handlePress('number', 3)} />
+      <Button title="+" onPress={() => handlePress('operator', '+')} />
+      <Button title="clear" onPress={() => handlePress('clear')} />
+      <Button title="=" onPress={() => handlePress('calculate')} />
+    </View>
   );
-}
+};
+
+export default App;
